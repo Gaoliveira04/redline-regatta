@@ -1,0 +1,76 @@
+Row: Past the Burn
+
+The Goal: Be the first to cross the finish line after a 2000m race by managing your stamina and stroke rate
+
+1. Setting up the game
+* The course: A straight venue of 6 lanes side by side (6 boats) divided into 40 spaces (space = 50m)
+* Course split: The track is divided into four 500m sectors. At the 500m, 1000m and 1500m there are Split Lines with a Sustainable Pace (Pace Limit)
+* The deck: each player chooses a color.
+    * Pace Cards: 12 (Movement cards: 1, 2 and 3 spaces)
+    * Suffering Cards: 3 (Random pace do to suffering from race, maybe you start to do less strength or the boat coordination starts to haver)
+    * Exhaustion Cards: 6, placed in a separate Stamina Pile
+* Stock Rate: You start in the Easy Rate (35spm)
+* Starting Hand: Draw 7 cards from your deck (Pace and Suffering Cards) into your hand
+
+Playing a round
+It is played over several rounds until all reach the finish line. Each round all players ALWAYS complete 4 steps:
+1. Change/maintain stroke rate.
+2. Play cards,
+3. Advance boat.
+4. Draw back up to seven cards.
+
+1. Stroke Rate
+First, check which rate your boat is in, and decide if you want to maintain it there or change it.
+Note: You can choose to shift jump the rate two positions, but doing so will require that you pay one Exhaustion card (Move 1 card from the Stamina Pile into the Discard Pile)
+Rate	Cards to Play	Effect
+Easy (36 spm)	1 Card	Cooldown: Move 2 Exhaustion Cards from hand to the Stamina pile.
+Steady (39 spm)	2 Card	No Effect
+Race Pace (42 spm)	3 Card	No Effect
+Sprint (45 spm)	4 Card	No Effect
+
+2. Set Pace and Move
+Your current rate determines exactly how many cards you play from your hand. Easy rate means you must play 1 card, Steady rate is 2 cards, and so on. In this step you can play all types of cards from your hand except for Exhaustion cards. 
+Then, sum all the space values from the cards to determine how much you move (your Pace). For Suffering cards, flip the top card form your deck and add to your total Pace. Move your boat forward by exactly that many Spaces on the venue.
+
+3. Discard
+You may discard Pace cards from your hand into the discard hand.
+Note: You can never choose to discard Suffering or Exhaustion cards.
+
+4. Split Checks (Pace Limit)
+If you crossed a Split Line (500m, 1000m and 1500m) or are in the Finish Zone (last 300m), you must now check your total Speed for the this turn.
+* If Pace > Pace Limit: Pay Exhaustion cards equal to the difference from the Stamina Pile into the discard pile.
+* If you can’t pay the cost. Stamina Pile becomes empty, you immediately catch a crab.
+
+    Catch a crab
+    * Move your boat back to the space immediately before the Split Line that caused the crab.
+    * Take 1 extra Stress card into your hand if you are in Easy or Steady Rate. or 2 extra Stress cards if you are in Race or Sprint rate.
+    * Reset your Stroke Rate to Easy rate.
+
+5. Change of tides
+If you are in the last two positions, in this round, you may move 1 extra Space. You caught a change in the river, maybe the current or the wind become more favourable to you, augmenting the speed of your boat, catch them!
+
+6. Motivation
+If you end your move adjacent to or behind another boat, you may move 2 Spaces forward, by spending 1 Exhaustion card from the Stamina pile into the discard pile. Put your hands on the fire and pass them!
+
+7. Replenish Hand
+Do it in order:
+1. Take all cards from your Play Area and put them onto your discard pile.
+2. If in Rate 36 or 39, move Exhaustion cards from your hand back to the Stamina Pile
+3. Draw back up to 7 cards
+
+Running out of cards
+At any point, if you must draw, flip, or discard cards and there are no cards left in your draw deck, immediately shuffle your discard pile and place it face down as your new draw deck. Then draw, flip, or discard the cards you were missing.
+If this happens during your turn, do not shuffle the cards in your Play Area back in the deck, as they have not been discarded yet.
+
+Exhaustion Cards
+As you row through the race you will accumulate Exhaustion cards in a pile. As a consequence, the more Exhaustion cards you have at the final stretch of the race the more difficult it will be to maintain speed. The only way to get Exhaustion cards out of pile is to catch your breath, typically by reducing the stroke rate. This cycle means the same Exhaustion card could be used several times during a race, depending on how fast you use it, draw it and catch your breath it down again.
+Exhaustion cards can never be discarded or played from your hand. They effectively reduce your hand size by filling it up with useless cards.
+	
+	Cluttered Hand
+	In rare circumstances you can get stuck with so many Exhaustion cards in your hand that you don’t have enough playable cards for the rate you’re in. If this happens, use as many playable cards as possible and cover the difference with Exhaustion cards.
+	In this case, your boat does not move this turn. Instead, when you reveal your played cards, immediately move your stroke rate to Easy rate, place the cards that are in your Play Area in your Discard pile, and skip straight to step 8 (Replenish Hand).
+
+How to Win
+You win the race (and the game) by being the first player to cross the finish line. If two or more boats finish in the same round, the winner is the player whose car could move more spaces through the played hand in that turn.
+* Motivation can never be used to cross the finish line nor after having crossed the finish line.
+At the end of the round, remove all the boats that crossed the finish line from the track and place them in order on the Podium Space on the board. Continue playing until all cars make it to the finish (give Change of Tides to the last two boats based).
