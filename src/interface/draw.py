@@ -1,4 +1,5 @@
 import os
+from config import ASSETS_DIR
 
 def clear_screen():
     """
@@ -107,18 +108,26 @@ def draw_venue(boats, venue_length=100):
     clear_screen()
     width = terminal_size()
 
-    lane_size = int(width * 0.8)
-    scale = int(lane_size / venue_length)
+    if width < 40:
+        print("Please widen your terminal to view the race!")
+        return
 
-    padding_required = int((width - lane_size) / 2)
+    lane_size = int(width * 0.8)
+    scale = lane_size / venue_length
+
+    padding_required = (width - lane_size) // 2
     padding = " " * padding_required
 
-    print("\n" + " " * (padding_required + int(lane_size/2) - 5) + "ROWING VENUE")
+    header_text = "ROWING VENUE"
+    print("\n" + " " * (padding_required + (lane_size // 2) - (len(header_text) // 2)) + header_text)
     # Draw lanes and boat position
     for b in boats:
         print(padding + ("─" * lane_size))
 
-        visual_pos = " " * int(min(b.position * scale, lane_size - 1))
+        pos_index = int(b.position * scale)
+        pos_index = max(0, min(pos_index, lane_size - 1))
+
+        visual_pos = " " * pos_index
         finish_marker = "" if b.position < venue_length else " ★"
 
         print(f"{padding}{visual_pos}{b.color}●{finish_marker}\033[0m")
