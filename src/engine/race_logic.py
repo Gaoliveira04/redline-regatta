@@ -188,12 +188,12 @@ class GameLogic:
                         boat.stamina_pile.clear()
                         boat.position = split_loc - 1
                         if boat.stroke_rate in [EASY,STEADY]:
-                            boat.stroke_rate = EASY
                             boat.hand.append("s")
                         else:
-                            boat.stroke_rate = EASY
                             boat.hand.append("s") 
                             boat.hand.append("s")
+                            
+                        boat.stroke_rate = EASY
                         return "Exhausted"
         return "Passed"
     

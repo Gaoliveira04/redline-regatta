@@ -11,7 +11,7 @@ def main():
             game = GameController(chosen_colors)
             game.run_game()
         elif signal == "Exit":
-            print("Thanks for playing! See you at the finish line.")
+            print("\nThanks for playing! See you at the next starting line.")
             break
 
 

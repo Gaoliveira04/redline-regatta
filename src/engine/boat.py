@@ -10,6 +10,7 @@ class Boat:
 
         # ------ MOVEMENT ------
         self.position = 0
+        self.turn = 0
         self.stroke_rate = EASY
         self.finished = False
 

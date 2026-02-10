@@ -1,5 +1,4 @@
 import os
-from config import ASSETS_DIR
 
 def clear_screen():
     """
@@ -104,6 +103,7 @@ def draw_cards(options, selected_index, color=None):
 
 def draw_venue(boats, venue_length=100):
     """
+    Draws the lanes for the race and the boats in the correct position
     """
     clear_screen()
     width = terminal_size()
@@ -120,6 +120,7 @@ def draw_venue(boats, venue_length=100):
 
     header_text = "ROWING VENUE"
     print("\n" + " " * (padding_required + (lane_size // 2) - (len(header_text) // 2)) + header_text)
+    
     # Draw lanes and boat position
     for b in boats:
         print(padding + ("─" * lane_size))
@@ -131,33 +132,43 @@ def draw_venue(boats, venue_length=100):
         finish_marker = "" if b.position < venue_length else " ★"
 
         print(f"{padding}{visual_pos}{b.color}●{finish_marker}\033[0m")
+    
     # Draw final bondary
     print(padding + ("─" * lane_size))
+    print(padding + (" " * ((lane_size // 4) - 1)) + "^" + (" " * ((lane_size // 4) - 1)) + "^" + (" " * ((lane_size // 4) - 1)) + "^" + (" " * ((lane_size // 8) - 1)) + "^")
+    print(padding + (" " * ((lane_size // 4) - 1)) + "500m" + (" " * ((lane_size // 4) - 4)) + "1000m" + (" " * ((lane_size // 4) - 5)) + "1500m" + (" " * ((lane_size // 8) - 5)) + "1750m")
+    print(padding + (" " * ((lane_size // 4) - 1)) + "SL: 4" + (" " * ((lane_size // 4) - 5)) + "SL: 5" + (" " * ((lane_size // 4) - 5)) + "SL: 6" + (" " * ((lane_size // 8) - 5)) + "SL: 8")
 
-def draw_leaderboard(final_standings):
+
+def draw_leaderboard(positions, title):
     """
+    Draws leaderboard with positions during race and turns when the race finished if title contains "Finish" or "Final"
     """
     width = terminal_size()
 
     # Calculate empty space needed for title
-    input_length = len("RACE FINISHED!")
+    input_length = len(title)
     padding_required = int((width - input_length) / 2)
     padding = " " * padding_required
 
     # Calculate empty space needed for separator
-    bar_length = input_length * 2
-    padding_required2 = int((width - bar_length) / 2)
-    padding2 = " " * padding_required2
+    bar_length = input_length * 3
+    padding__bar_required = int((width - bar_length) / 2)
+    padding_bar = " " * padding__bar_required
 
     # Print header
     print("")
-    print(padding2 + ("─" * bar_length))
-    print(padding + "RACE FINISHED!")
-    print(padding2 + ("─" * bar_length))
+    print(padding_bar + ("─" * bar_length))
+    print(padding + title)
+    print(padding_bar + ("─" * bar_length))
+
+    show_turns = "Finish" in title or "Final" in title
 
     # Calculate empty space needed for ranking
-    max_option_len = max(len(b.name) for b in final_standings) + 4
+    max_option_len = max(len(f"1. {b.name}  Turns:{b.position}") for b in positions)
     margin = (width - max_option_len) // 2
     padding = " " * margin
-    for i, b in enumerate(final_standings):
-        print(f"{padding}{i+1}. {b.color}")
+
+    for i, b in enumerate(positions):
+        text = f"Turns: {b.turn}" if show_turns else f"Dist: {b.position * 20}m"
+        print(f"{padding}{b.color}{i+1}. {b.name:<8} {text}\033[0m")
