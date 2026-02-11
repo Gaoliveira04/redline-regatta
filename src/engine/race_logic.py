@@ -1,5 +1,5 @@
 import random
-from src.engine.constants import VENUE_LENGTH, COLORS, HAND_LIMIT, EASY, STEADY, SPLITS, MIN_RATE, MAX_RATE
+from src.engine.constants import VENUE_LENGTH, COLORS, HAND_LIMIT, RATES, SPLITS
 from src.engine.boat import Boat
 
 class GameLogic:
@@ -26,9 +26,11 @@ class GameLogic:
         for lane in lanes:
             npc_color = available_colors.pop(0)
             boats.append(Boat(name= npc_color, color= COLORS[npc_color], lane= lane, is_npc= True))
+        
+        sorted(boats, key=lambda x: x.lane) 
         return boats
 
-    # ------ DECK MANAGEMENT ------ 
+    # ------ DECKS MANAGEMENT ------ 
     def draw_cards(boat: Boat):
         """
         Draw top cards from draw deck to the hand until it has 7 cards.
@@ -66,9 +68,24 @@ class GameLogic:
             boat.discard_pile.extend(playable_cards)
             for c in playable_cards:
                 boat.hand.remove(c)
-            boat.stroke_rate = EASY
+            boat.stroke_rate = RATES["35 spm"]
             return True
         return False
+    
+    def pay_exhaustion_cards(boat, amount: int):
+        """
+        Move an amount of Exhaustion Cards from the Stamina Pile into the Discard Pile
+        """
+        if len(boat.stamina_pile) < amount:
+            while len(boat.stamina_pile) > 0:
+                boat.stamina_pile.clear()
+                boat.discard_pile.append("e")
+            return False
+
+        for _ in range(amount):
+            boat.stamina_pile.pop()
+            boat.discard_pile.append("e")
+        return True
 
     # ------ STROKE RATE MANAGEMENT ------ 
     def change_stroke_rate(boat, choice: str, use_jump: bool):
@@ -93,22 +110,21 @@ class GameLogic:
             new_stroke_rate -= step
 
         # Apply stroke rate bounds
-        new_stroke_rate = max(MIN_RATE, min(MAX_RATE, new_stroke_rate))
+        new_stroke_rate = max(RATES["35 spm"], min(RATES["45 spm"], new_stroke_rate))
 
         # Pay exhaustion cost if jump succeeded
         if abs(new_stroke_rate - boat.stroke_rate) == 2:
-            boat.stamina_pile.pop()
-            boat.discard_pile.append("e")
+            GameLogic.pay_exhaustion_cards(boat, 1)
 
         boat.stroke_rate = new_stroke_rate
 
-    def easy_rate_cooldown(boat):
+    def min_rate_effect(boat):
         """
-        Easy rate bonus: 
+        Stroke Rate Effect: 35 spm:
         Move up to 2 Exhaustion cards from hand back to the stamina pile
         """
         # Only appens in the Easy stroke rate
-        if boat.stroke_rate != EASY:
+        if boat.stroke_rate != RATES["35 spm"]:
             return
     
         recovery_count = 0
@@ -117,13 +133,30 @@ class GameLogic:
                 boat.hand.remove("e")
                 boat.stamina_pile.append("e")
                 recovery_count += 1
+    
+    def max_rate_effect(boat):
+        """
+        Stroke Rate Effect: 45 spm:
+        Move 1 Exhaustion Card from Stamina Pile to Discard Pile
+        """
+        # Only appens in the 45 spm
+        if boat.stroke_rate != RATES["45 spm"] or boat.turn == 0:
+            return
+        
+        if "e" in boat.stamina_pile:
+            GameLogic.pay_exhaustion_cards(boat, 1)
+        else:
+            GameLogic.change_stroke_rate(boat, "down", False)
 
     # ------ PLAY/DISCARD CARDS ------ 
     def get_playable_cards(boat: Boat):
         """
         Returns playable cards and number allowed this turn.
         """
-        number_cards = boat.stroke_rate + 1
+        if boat.stroke_rate == 0 or boat.stroke_rate == 1:
+            number_cards = boat.stroke_rate + 1
+        else:
+            number_cards = boat.stroke_rate + 2
         playable_cards = [c for c in boat.hand if c != "e"]
         return playable_cards, number_cards
 
@@ -165,7 +198,7 @@ class GameLogic:
         GameLogic.discard_cards(boat, played_cards)
         return spaces_moved
 
-    def check_split_limit(boat: Boat, speed_this_turn: int):
+    def check_split_limit(boat: Boat, speed_this_turn: int, limits: dict):
         """
         Check if a boat passed a split limit too fast.
         Applies split penalities if exceeded.
@@ -173,28 +206,28 @@ class GameLogic:
         next_pos = boat.position + speed_this_turn
 
         # Find if boat just crossed a split, above the speed
-        for split_loc, split_limit in SPLITS.items():
+        for split_loc, split_limit in limits.items():
             if boat.position < split_loc <= next_pos:
                 if speed_this_turn > split_limit:
                     excess = speed_this_turn - split_limit
 
-                    # Detect if boat is exhausted
-                    if len(boat.stamina_pile) >= excess:
-                        for _ in range(excess):
-                            boat.stamina_pile.pop()
-                            boat.discard_pile.append("e")
-                        return "Penalized"
-                    else:
-                        boat.stamina_pile.clear()
-                        boat.position = split_loc - 1
-                        if boat.stroke_rate in [EASY,STEADY]:
-                            boat.hand.append("s")
-                        else:
-                            boat.hand.append("s") 
-                            boat.hand.append("s")
-                            
-                        boat.stroke_rate = EASY
+                    if len(boat.stamina_pile) > excess:
+                        GameLogic.pay_exhaustion_cards(boat, excess)
                         return "Exhausted"
+                    else:
+                        boat.position = split_loc - 1
+                        penalty_amount = 0
+                        if boat.stroke_rate == RATES["35 spm"]:
+                            penalty_amount = 1
+                        elif boat.stroke_rate == RATES["40 spm"]:
+                            penalty_amount = 2
+                        elif boat.stroke_rate == RATES["45 spm"]:
+                            penalty_amount = 3
+                    
+                        GameLogic.pay_exhaustion_cards(boat, penalty_amount)
+                                
+                        boat.stroke_rate = RATES["35 spm"]
+                        return "Crab"
         return "Passed"
     
     def apply_movement(boat: Boat, movement: int):
@@ -208,24 +241,9 @@ class GameLogic:
         """
         Finish the turn by refilling hand.
         """
-        GameLogic.easy_rate_cooldown(boat)
+        GameLogic.min_rate_effect(boat)
+        GameLogic.max_rate_effect(boat)
         GameLogic.draw_cards(boat)
-
-    # ------ STAMINA PILE MANAGEMENT ------     
-    def pay_exhaustion_cards(boat, amount: int):
-        """
-        Jump pace: 1 card
-        Motivation: 1 card
-        Split limit: Pace - Pace limit
-        """
-        if len(boat.stamina_pile) < amount:
-            boat.stamina_pile.clear()
-            return False
-
-        for _ in range(amount):
-            boat.stamina_pile.pop()
-            boat.discard_pile.append("e")
-        return True
     
     # ------ BONUS PHASE ------
     def can_use_motivation(current_boat: Boat, boat_ahead: Boat):

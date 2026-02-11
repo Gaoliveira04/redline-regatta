@@ -1,5 +1,5 @@
 import random
-from src.engine.constants import EASY, PACE_CARDS, SUFFERING_CARDS, EXHAUSTION_CARDS
+from src.engine.constants import RATES, PACE_CARDS, SUFFERING_CARDS, EXHAUSTION_CARDS
 
 class Boat:
     def __init__(self, name, color, lane, is_npc = False):
@@ -11,7 +11,7 @@ class Boat:
         # ------ MOVEMENT ------
         self.position = 0
         self.turn = 0
-        self.stroke_rate = EASY
+        self.stroke_rate = RATES["45 spm"]
         self.finished = False
 
         # ------ CARDS ------        

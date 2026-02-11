@@ -1,7 +1,6 @@
 import time
-import random
 from src.interface.interaction import interactive_selection
-from src.interface.draw import draw_venue, draw_leaderboard
+from src.interface.draw import draw_venue, draw_leaderboard, stroke_rate_name
 from src.engine.constants import VENUE_LENGTH, SPLITS
 from src.engine.race_logic import GameLogic
 
@@ -71,17 +70,15 @@ class GameController:
                 if b.finished:
                     continue
 
-                b.turn += 1
-
                 # Show next player
-                title_msg = f"{b.name}'s Turn (Pos: {b.position * 20}m | Rate: {b.stroke_rate})"
+                title_msg = f"{b.name}'s Turn (Pos: {b.position * 20}m | Rate: {stroke_rate_name(b.stroke_rate)})"
                 interactive_selection(["Continue"], "vertical", title_msg, b.color)
 
                 GameLogic.draw_cards(b)
 
                 # Show stats
                 if not b.is_npc:
-                    title_msg = f"{b.name}'s (Pos: {b.position * 20}m | Rate: {b.stroke_rate} | Hand: {b.hand} | Stamina: {len(b.stamina_pile)})"
+                    title_msg = f"{b.name}'s (Pos: {b.position * 20}m | Rate: {stroke_rate_name(b.stroke_rate)} | Hand: {b.hand} | Stamina: {len(b.stamina_pile)})"
                     choice_idx = interactive_selection(["Continue"], "vertical", title_msg, b.color)
 
                 if GameLogic.check_clustered_hand(b):
@@ -97,7 +94,7 @@ class GameController:
                 # Detect if it's a player
                 if not b.is_npc:
                     options = ["maintain", "up", "down"]
-                    title_msg = f"Current Rate: {b.stroke_rate}. Change?"
+                    title_msg = f"Current Rate: {stroke_rate_name(b.stroke_rate)}. Change?"
                     choice_idx = interactive_selection(options, "vertical", title_msg, b.color)
                     rate_choice = options[choice_idx]
 
@@ -108,31 +105,25 @@ class GameController:
                 else:
                     potential_cards = sorted([c for c in b.hand if isinstance(c, int) or c == 's'], 
                                             key=lambda x: (x if isinstance(x, int) else 1.5), reverse=True)
-                    est_cards_needed = b.stroke_rate + 1
-                    est_speed = sum([(c if isinstance(c, int) else 1.5) for c in potential_cards[:est_cards_needed]])
+                    est_speed = sum([(c if isinstance(c, int) else 1.5) for c in potential_cards[:b.stroke_rate + 1]])
                     next_pos = b.position + est_speed
 
                     upcoming_limit = None
-                    for split_loc, split_limit in SPLITS.items():
-                        if b.position < split_loc <= next_pos:
-                            upcoming_limit = split_limit
+                    for pace_loc, pace_limit in SPLITS.items():
+                        if b.position < pace_loc <= next_pos:
+                            upcoming_limit = pace_limit
+                            break
 
                     if upcoming_limit:
-                        if est_speed > upcoming_limit:
+                        if est_speed >= upcoming_limit:
                             rate_choice = "down"
-                        elif est_speed < upcoming_limit - 3:
-                            rate_choice = "up"
-                            jump_choice = True
-                        elif est_speed < split_limit - 1:
+                        elif est_speed < upcoming_limit - 2:
                             rate_choice = "up"
                     else:
                         if len(b.stamina_pile) > 3:
                             rate_choice = "up"
-                            jump_choice = True
                         elif len(b.stamina_pile) < 2:
                             rate_choice = "down"
-                        else:
-                            rate_choice = "up"
 
                 GameLogic.change_stroke_rate(b, rate_choice, jump_choice)
 
@@ -153,9 +144,9 @@ class GameController:
 
                 # Movement
                 movement= GameLogic.calculate_movement(b, cards_selected)
-                status = GameLogic.check_split_limit(b, movement)
+                status = GameLogic.check_split_limit(b, movement, SPLITS)
 
-                if status == "Passed":
+                if status == "Passed" or status == "Penalized":
                         GameLogic.apply_movement(b, movement)
 
                 # Optional cards discard
@@ -186,15 +177,17 @@ class GameController:
                 # Replenish hand
                 GameLogic.replenish_hand(b)
 
+                b.turn += 1
+
                 # Display results
                 if status == "Passed":
                     title_msg = f"{b.name} moves {movement} spaces. New Position: {b.position * 20}m"
                     choice_idx = interactive_selection(["Continue"], "vertical", title_msg, b.color)
-                elif status == "Penalized":
-                    title_msg = f"CRAB CAUGHT! {b.name} pushed too hard and lost momentum. New Position: {b.position * 20}m"
+                elif status == "Exhausted":
+                    title_msg = f"EXHAUSTION! {b.name} pushed too hard and is becoming exhausted. New Position: {b.position * 20}m"
                     choice_idx = interactive_selection(["Continue"], "vertical", title_msg, b.color)
-                else:
-                    title_msg = f"CRAB CAUGHT! {b.name} pushed too hard and become exhausted. New Position: {b.position * 20}m"
+                elif status == "Crab":
+                    title_msg = f"CRAB CAUGHT! {b.name} pushed too hard and lost momentum. New Position: {b.position * 20}m"
                     choice_idx = interactive_selection(["Continue"], "vertical", title_msg, b.color)
             
             # ------ END OF ROUND BONUSES ------

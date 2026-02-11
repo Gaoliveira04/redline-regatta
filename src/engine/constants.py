@@ -20,21 +20,18 @@ EXHAUSTION_CARDS = ["e","e","e","e","e","e"]
 HAND_LIMIT = 7
 
 # ------------ STROKE RATE CONSTANTS ------------
-
-EASY = 0      # 36 spm
-STEADY = 1    # 39 spm
-RACE = 2      # 42 spm
-SPRINT = 3    # 45 spm
-
-MIN_RATE = EASY
-MAX_RATE = SPRINT
+RATES ={
+    "35 spm": 0,
+    "40 spm": 1,
+    "45 spm": 2
+}
 
 # ------------ SPLIT LIMITS ------------
 SPLITS = {
-    25: 4, 
-    50: 5, 
+    25: 7, 
+    50: 6, 
     75: 6,
-    85: 8
+    85: 7
 }
 
 METERS = {

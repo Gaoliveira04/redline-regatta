@@ -137,7 +137,7 @@ def draw_venue(boats, venue_length=100):
     print(padding + ("─" * lane_size))
     print(padding + (" " * ((lane_size // 4) - 1)) + "^" + (" " * ((lane_size // 4) - 1)) + "^" + (" " * ((lane_size // 4) - 1)) + "^" + (" " * ((lane_size // 8) - 1)) + "^")
     print(padding + (" " * ((lane_size // 4) - 1)) + "500m" + (" " * ((lane_size // 4) - 4)) + "1000m" + (" " * ((lane_size // 4) - 5)) + "1500m" + (" " * ((lane_size // 8) - 5)) + "1750m")
-    print(padding + (" " * ((lane_size // 4) - 1)) + "SL: 4" + (" " * ((lane_size // 4) - 5)) + "SL: 5" + (" " * ((lane_size // 4) - 5)) + "SL: 6" + (" " * ((lane_size // 8) - 5)) + "SL: 8")
+    print(padding + (" " * ((lane_size // 4) - 1)) + "PL: 4" + (" " * ((lane_size // 4) - 5)) + "PL: 5" + (" " * ((lane_size // 4) - 5)) + "PL: 6" + (" " * ((lane_size // 8) - 5)) + "PL: 8")
 
 
 def draw_leaderboard(positions, title):
@@ -172,3 +172,11 @@ def draw_leaderboard(positions, title):
     for i, b in enumerate(positions):
         text = f"Turns: {b.turn}" if show_turns else f"Dist: {b.position * 20}m"
         print(f"{padding}{b.color}{i+1}. {b.name:<8} {text}\033[0m")
+
+def stroke_rate_name(stroke_rate):
+    if stroke_rate == 0:
+        return "35 spm"
+    elif stroke_rate == 1:
+        return "40 spm"
+    else:
+        return "45 spm"
