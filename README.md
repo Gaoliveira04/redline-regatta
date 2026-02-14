@@ -1,5 +1,5 @@
 # **Redline Regatta**
-Redline Regatta is a CLI game ispired by modern racing board games, where up to six players compete in a 2000m rowing race by pushing their limits, without breaking.
+Redline Regatta is a CLI game ispired by modern racing board games, where up to 6 players compete in a 2000m rowing race by pushing their limits, without breaking.
 
 ![Rowing Race](assets/images/redline_image.png)
 
