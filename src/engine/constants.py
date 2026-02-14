@@ -15,28 +15,24 @@ LANES = [1,2,3,4,5,6]
 
 # ------------ CARDS CONSTANTS ------------
 PACE_CARDS = [1,1,1,1,1,1,2,2,2,2,3,3]
-SUFFERING_CARDS = ["s","s","s"]
-EXHAUSTION_CARDS = ["e","e","e","e","e","e"]
+INSTABILITY_CARDS = ["i","i","i"]
+STAMINA_CARDS = ["s","s","s","s","s","s"]
 HAND_LIMIT = 7
 
 # ------------ STROKE RATE CONSTANTS ------------
-RATES ={
-    "35 spm": 0,
-    "40 spm": 1,
-    "45 spm": 2
-}
+RATES =[0,1,2]
 
 # ------------ SPLIT LIMITS ------------
 SPLITS = {
     25: 7, 
-    50: 6, 
+    50: 7, 
     75: 6,
-    85: 7
+    87: 5
 }
 
 METERS = {
     25: "500m",
     50: "1000m",
     75: "1500m",
-    85: "1750m"
+    87: "1750m"
 }

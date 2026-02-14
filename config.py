@@ -7,4 +7,6 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 SRC_DIR = os.path.join(BASE_DIR, "src")
 MENU_DIR = os.path.join(SRC_DIR, "menu")
 ENGINE_DIR = os.path.join(SRC_DIR, "engine")
-ASSETS_DIR = os.path.join(SRC_DIR, "assets")
+
+# Assets directory
+ASSETS_DIR = os.path.join(BASE_DIR, "assets")

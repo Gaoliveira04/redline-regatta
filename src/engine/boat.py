@@ -1,5 +1,5 @@
 import random
-from src.engine.constants import RATES, PACE_CARDS, SUFFERING_CARDS, EXHAUSTION_CARDS
+from src.engine.constants import PACE_CARDS, INSTABILITY_CARDS, STAMINA_CARDS
 
 class Boat:
     def __init__(self, name, color, lane, is_npc = False):
@@ -9,15 +9,16 @@ class Boat:
         self.is_npc = is_npc
 
         # ------ MOVEMENT ------
+        self.round = 0
         self.position = 0
-        self.turn = 0
-        self.stroke_rate = RATES["45 spm"]
+        self.stroke_rate = 2
+        self.caught_crab = False
         self.finished = False
 
         # ------ CARDS ------        
-        self.draw_pile = (PACE_CARDS + SUFFERING_CARDS).copy()
+        self.draw_pile = (PACE_CARDS + INSTABILITY_CARDS).copy()
         random.shuffle(self.draw_pile)
 
         self.hand = []
         self.discard_pile = []
-        self.stamina_pile = EXHAUSTION_CARDS.copy()
+        self.stamina_pile = STAMINA_CARDS.copy()

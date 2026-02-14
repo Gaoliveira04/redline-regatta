@@ -118,7 +118,7 @@ def draw_venue(boats, venue_length=100):
     padding_required = (width - lane_size) // 2
     padding = " " * padding_required
 
-    header_text = "ROWING VENUE"
+    header_text = "REDLINE VENUE"
     print("\n" + " " * (padding_required + (lane_size // 2) - (len(header_text) // 2)) + header_text)
     
     # Draw lanes and boat position
@@ -137,7 +137,7 @@ def draw_venue(boats, venue_length=100):
     print(padding + ("─" * lane_size))
     print(padding + (" " * ((lane_size // 4) - 1)) + "^" + (" " * ((lane_size // 4) - 1)) + "^" + (" " * ((lane_size // 4) - 1)) + "^" + (" " * ((lane_size // 8) - 1)) + "^")
     print(padding + (" " * ((lane_size // 4) - 1)) + "500m" + (" " * ((lane_size // 4) - 4)) + "1000m" + (" " * ((lane_size // 4) - 5)) + "1500m" + (" " * ((lane_size // 8) - 5)) + "1750m")
-    print(padding + (" " * ((lane_size // 4) - 1)) + "PL: 4" + (" " * ((lane_size // 4) - 5)) + "PL: 5" + (" " * ((lane_size // 4) - 5)) + "PL: 6" + (" " * ((lane_size // 8) - 5)) + "PL: 8")
+    print(padding + (" " * ((lane_size // 4) - 1)) + "PL: 7" + (" " * ((lane_size // 4) - 5)) + "PL: 7" + (" " * ((lane_size // 4) - 5)) + "PL: 6" + (" " * ((lane_size // 8) - 5)) + "PL: 5")
 
 
 def draw_leaderboard(positions, title):
@@ -174,9 +174,15 @@ def draw_leaderboard(positions, title):
         print(f"{padding}{b.color}{i+1}. {b.name:<8} {text}\033[0m")
 
 def stroke_rate_name(stroke_rate):
-    if stroke_rate == 0:
-        return "35 spm"
-    elif stroke_rate == 1:
-        return "40 spm"
-    else:
-        return "45 spm"
+    """
+    Change appearence of stroke rate from numbers to the corresponding spm rate.
+    """
+    if type(stroke_rate) == int:
+        if stroke_rate == 0:
+            return "35 spm"
+        elif stroke_rate == 1:
+            return "40 spm"
+        else:
+            return "45 spm"
+    elif type(stroke_rate) == list:
+        return ["35 spm", "40 spm", "45 spm"]

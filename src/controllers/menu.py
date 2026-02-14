@@ -37,7 +37,7 @@ class MenuController:
 
         options = list(rules.keys()) + ["Done"]
         while True:
-            choice_idx = interactive_selection(options, "vertical", "Rules: Row: Past the Burn")
+            choice_idx = interactive_selection(options, "vertical", "Redline Regatta Rules:")
             selection = options[choice_idx]
             if selection == "Done":
                 break
@@ -66,7 +66,7 @@ class MenuController:
     def run_menu():
         while True:
             options = ["Start Race", "Rules", "Credits", "Exit"]
-            choice_idx = interactive_selection(options, "vertical", "Row: Past the Burn")
+            choice_idx = interactive_selection(options, "vertical", "Redline Regatta")
             selection = options[choice_idx]
 
             if selection == "Start Race":
