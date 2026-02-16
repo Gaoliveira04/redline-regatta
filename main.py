@@ -14,6 +14,5 @@ def main():
             print("\nThanks for playing! See you at the next starting line.")
             break
 
-
 if __name__ == "__main__":
     main()

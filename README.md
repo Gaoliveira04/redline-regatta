@@ -11,6 +11,7 @@ At the start of each round, player chooses a Stroke Rate, which sets how many ca
 As the race progress, the boat's stamina gradually deplets, clogging the player's hand with Stamina Cards, that reduces available options and forces the player to choose: slow down to recover or push harder and risk mistakes. Meanwhile, players who fall behind can benefit from situational bonuses, creating opportunities for dramatic late-race camebacks. 
 
 Every race becomes a test of pacing and precison under pressure, as players push their boats limits, right up to the point where everything starts to fall apart.
+(See rules on the menu for better understanding.)
 
 ## How to Play
 To start playing this game, you can follow these steps:
@@ -27,6 +28,10 @@ To start playing this game, you can follow these steps:
     ```
     $ python3 main.py
     ```
+4. **Run the analyses**:
+    ```
+    $ python3 -m analysis.crab_rate
+    ```
 
 ## File Structure
 ```text
@@ -36,21 +41,24 @@ redline-regatta/
 ├── README.md               # Project documentation
 ├── src/
 │   ├── controllers/
-│   │   ├── menu.py         # 
-│   │   └── game.py         #
+│   │   ├── menu.py         # Manages menu choices
+│   │   └── game.py         # Manages race rounds
 │   ├── engine/
 │   │   ├── constants.py    # Game values
 │   │   ├── boat.py         # Boat state
-│   │   └── race_logic.py   # Rules, movement, bonus
+│   │   ├── race_logic.py   # Rules, movement, bonuses logic
+│   │   ├── npc_logic.py    # NPC decision making
+│   │   └── content.py      # File Parsers for Rules/Credits
 │   └── interface/
+│       ├── view.py         # Game screen view and input manager
 │       ├── interaction.py  # Key capture
-│       └── draw.py         # 
+│       └── draw.py         # ASCII Rendering Logic
 ├── analysis/
-│   └── crab_rate.py        # Balance simulation
+│   └── crab_rate.py        # NPCs crab rate simulation
 └── assets/
-    ├── rules.txt           #
-    ├── credits.txt         #
-    └── images/             #
+    ├── rules.txt           # Game rules
+    ├── credits.txt         # Game credit
+    └── images/
 ```
 
 ## Contributing
@@ -59,7 +67,7 @@ If your are reading this you should contribute! Feel free to:
 - Give feedback 
 
 ## License
-
+This project is licensed under the MIT License.
 
 ---
 Built by Gabriel Oliveira

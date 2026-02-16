@@ -13,6 +13,7 @@ class Boat:
         self.position = 0
         self.stroke_rate = 2
         self.caught_crab = False
+        self.penalized = False
         self.finished = False
 
         # ------ CARDS ------        

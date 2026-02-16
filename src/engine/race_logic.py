@@ -50,7 +50,7 @@ class GameLogic:
         # Sort hand: pace cards, instability cards and stamina cards
         boat.hand.sort(key=lambda x: (x == "s", x == "i", x))
 
-    def check_clustered_hand(boat):
+    def check_clustered_hand(boat: Boat):
         """
         Detect if hand of player is a Cluttered Hand
         """
@@ -73,7 +73,7 @@ class GameLogic:
             return True
         return False
     
-    def pay_stamina_cards(boat, amount: int):
+    def pay_stamina_cards(boat: Boat, amount: int):
         """
         Move an amount of Stamina Cards from the Stamina Pile into the Discard Pile
         """
@@ -88,8 +88,15 @@ class GameLogic:
             boat.discard_pile.append("s")
         return True
 
+    def check_stamina(boat: Boat):
+        if len(boat.stamina_pile) == 0:
+            boat.stroke_rate = 0
+            boat.penalized = True
+            return "exhausted"
+        return "ok"
+
     # ------ STROKE RATE MANAGEMENT ------ 
-    def change_stroke_rate(boat, choice: int):
+    def change_stroke_rate(boat: Boat, choice: int):
         """
         Applies a change in stroke rate.
         Detects if user wants to jump in stroke rate and if can pay.
@@ -113,7 +120,7 @@ class GameLogic:
         boat.stroke_rate = new_rate
         return "changed"
 
-    def min_rate_effect(boat):
+    def min_rate_effect(boat: Boat):
         """
         Stroke Rate Effect: 35 spm:
         Move up to 2 Stamina cards from hand back to the stamina pile
@@ -129,7 +136,7 @@ class GameLogic:
                 boat.stamina_pile.append("s")
                 recovery_count += 1
     
-    def max_rate_effect(boat):
+    def max_rate_effect(boat: Boat):
         """
         Stroke Rate Effect: 45 spm:
         Move 1 Stamina Card from Stamina Pile to Discard Pile
@@ -165,7 +172,7 @@ class GameLogic:
                 boat.hand.remove(card)
     
     # ------ MOVEMENT ------ 
-    def calculate_movement(boat, played_cards: list):
+    def calculate_movement(boat: Boat, played_cards: list):
         """
         Calculate movement of boat based on played cards
         """
@@ -193,39 +200,40 @@ class GameLogic:
         GameLogic.discard_cards(boat, played_cards)
         return spaces_moved
 
-    def check_split_limit(boat: Boat, speed_this_turn: int, limits: dict):
+    def check_split_limit(boat: Boat, pace_this_turn: int, limits: dict):
         """
         Check if a boat passed a split limit too fast.
-        Applies split penalities if exceeded.
         """
-        next_pos = boat.position + speed_this_turn
+        next_pos = boat.position + pace_this_turn
 
         # Find if boat just crossed a split, above the speed
         for split_loc, split_limit in limits.items():
             if boat.position < split_loc <= next_pos:
-                if speed_this_turn > split_limit:
-                    excess = speed_this_turn - split_limit
+                if pace_this_turn > split_limit:
+                    excess = pace_this_turn - split_limit
 
-                    if len(boat.stamina_pile) > excess:
-                        GameLogic.pay_stamina_cards(boat, excess)
-                        return "Tired"
+                    # Check if boat can afford stamina penality
+                    if len(boat.stamina_pile) >= excess:
+                        return "tired", excess
                     else:
-                        boat.position = split_loc - 1
-                        boat.caught_crab = True
-
-                        penalty_amount = 0
-                        if boat.stroke_rate == 0:
-                            penalty_amount = 1
-                        elif boat.stroke_rate == 1:
-                            penalty_amount = 2
-                        elif boat.stroke_rate == 2:
-                            penalty_amount = 3
+                        return "crab", split_loc
+        return "passed", 0
+    
+    def apply_crab(boat: Boat, split_location: int):
+        """
+        Applies crab penalities.
+        """
+        penalty_amount = 0
+        if boat.stroke_rate == 0 or boat.stroke_rate == 1:
+            penalty_amount = 1
+        else:
+            penalty_amount = 2
                     
-                        GameLogic.pay_stamina_cards(boat, penalty_amount)
-                                
-                        boat.stroke_rate = 0
-                        return "Crab"
-        return "Passed"
+        GameLogic.pay_stamina_cards(boat, penalty_amount)
+        
+        boat.position = split_location - 1
+        boat.stroke_rate = 0
+        boat.caught_crab = True
     
     def apply_movement(boat: Boat, movement: int):
         """

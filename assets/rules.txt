@@ -16,7 +16,7 @@ Game Setup:
 	
 	- Instability Cards (3): These cards represent unstable rowing under fatigue. When played, the top card of your draw deck is flipped and its value is added to your Pace.
 	
-	- Stamina Cards (6): Begin in a separate Stamina Pile, entering your into the Discard Pile during the race
+	- Stamina Cards (7): Begin in a separate Stamina Pile, entering your into the Discard Pile during the race
 
 ➤ Other Components:
 	- Draw Deck: Deck with Pace and Instability cards that you use to replenish your hand
@@ -70,7 +70,7 @@ Note: Stamina Cards can't be played.
 	- After crossing the finish line you may not move the boat.
 
 
-Physiological Threshold (Pace Limit):
+Physiological Threshold (Pace Limits):
 Whenever your movement crosses a Split Line, you must now check your pace.
 
 	Pace Limits:
@@ -87,9 +87,8 @@ Whenever your movement crosses a Split Line, you must now check your pace.
 	When you catch a crab:
 	1. Move your boat back to the space immediately before the Split Line that caused it.
 	2. Take Stamina Cards from the Stamina Pile into your Discard Pile based on the Stroke Rate:
-		- 35 spm: 1 Stamina Cards 
-		- 40 spm: 2 Stamina Cards
-		- 45 spm: 3 Stamina Cards
+		- 35 spm or 40 spm: 1 Stamina Cards 
+		- 45 spm: 2 Stamina Cards
 	3. Reset your Stroke Rate to 35 spm.
 
 
@@ -130,18 +129,20 @@ As you row through the race you will accumulate Stamina Cards in your Discard Pi
 - They can never be played or discarded.
 - The only way to remove them is by rowing at 35 spm.
 - Stamina cards cycle between the Stamina Pile and your hand throughout the race.
-	
 
-Cluttered Hand:
-If you do not have enough playable cards to meet your Stroke Rate requirement:
+	Exhaustion:
+	If at any point your Stamina Pile reaches 0, you become Exhausted:
+	1. Your rate immediately becomes 35 spm
+	2. The bonus Motivation become inaccessible
+	3. If you must pay Stamina Cards and cannot pay you Catch a Crab (normal rule).
+	4. You exit this state once Stamina Cards return to the Stamina Pile.
 
-1. Play as many valid cards as possible.
-2. Cover the remaining required cards with Stamina cards.
-3. Your boat does not move this turn.
-4. Immediately:
-   - Set your Stroke Rate to 35 spm
-   - Discard all cards from your Play Area
-   - Skip directly to Replenish Hand
+	Cluttered Hand:
+	If you do not have enough playable cards to meet your Stroke Rate requirement:
+	1. Your boat does not move this turn.
+	2. Your Stroke Rate is set to 35 spm.
+	3. Discard all playable cards from your hand
+	4. You skip directly to Replenish Hand
 
 
 How to Win:
