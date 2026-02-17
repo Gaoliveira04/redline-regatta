@@ -4,6 +4,7 @@ from src.engine.constants import COLORS
 from src.engine.content import ContentManager
 
 class MenuController:
+    @staticmethod
     def select_colors():
         """
         Handles the loop for players to choose their boat colors.
@@ -24,6 +25,7 @@ class MenuController:
             available_colors.remove(selection)
         return chosen_colors
     
+    @staticmethod
     def show_rules(rules: dict):
         """
         Display an interactive menu of the rules.
@@ -42,6 +44,7 @@ class MenuController:
             print("\n" + ("-" * 30))
             input("Enter to return...")
 
+    @staticmethod
     def show_credits(credits):
         """
         Display credits.
@@ -57,6 +60,7 @@ class MenuController:
         print("\n" + ("-" * 30))
         input("Enter to return...")
 
+    @staticmethod
     def run_menu():
         """
         Main Menu Loop.

@@ -2,6 +2,7 @@ import os
 from config import ASSETS_DIR
 
 class ContentManager:
+    @staticmethod
     def get_rules():
         """
         Obtain the rules in topics from the rules file.
@@ -21,6 +22,7 @@ class ContentManager:
             print(f"Error: Rules file not found at {path}")
             return None
     
+    @staticmethod
     def get_credits():
         """
         Obtain the credits from the credits file.

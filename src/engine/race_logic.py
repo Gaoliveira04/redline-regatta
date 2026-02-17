@@ -3,6 +3,7 @@ from src.engine.constants import VENUE_LENGTH, COLORS, HAND_LIMIT
 from src.engine.boat import Boat
 
 class GameLogic:
+    @staticmethod
     def create_boat(chosen_colors: list):
         """
         Creates players boats and npc boats based on chosen color.
@@ -29,6 +30,7 @@ class GameLogic:
         return sorted(boats, key=lambda x: x.lane) 
 
     # ------ DECKS MANAGEMENT ------ 
+    @staticmethod
     def draw_cards(boat: Boat):
         """
         Draw top cards from draw deck to the hand until it has 7 cards.
@@ -50,6 +52,7 @@ class GameLogic:
         # Sort hand: pace cards, instability cards and stamina cards
         boat.hand.sort(key=lambda x: (x == "s", x == "i", x))
 
+    @staticmethod
     def check_clustered_hand(boat: Boat):
         """
         Detect if hand of player is a Cluttered Hand
@@ -73,6 +76,7 @@ class GameLogic:
             return True
         return False
     
+    @staticmethod
     def pay_stamina_cards(boat: Boat, amount: int):
         """
         Move an amount of Stamina Cards from the Stamina Pile into the Discard Pile
@@ -88,6 +92,7 @@ class GameLogic:
             boat.discard_pile.append("s")
         return True
 
+    @staticmethod
     def check_stamina(boat: Boat):
         if len(boat.stamina_pile) == 0:
             boat.stroke_rate = 0
@@ -96,6 +101,7 @@ class GameLogic:
         return "ok"
 
     # ------ STROKE RATE MANAGEMENT ------ 
+    @staticmethod
     def change_stroke_rate(boat: Boat, choice: int):
         """
         Applies a change in stroke rate.
@@ -120,6 +126,7 @@ class GameLogic:
         boat.stroke_rate = new_rate
         return "changed"
 
+    @staticmethod
     def min_rate_effect(boat: Boat):
         """
         Stroke Rate Effect: 35 spm:
@@ -136,6 +143,7 @@ class GameLogic:
                 boat.stamina_pile.append("s")
                 recovery_count += 1
     
+    @staticmethod
     def max_rate_effect(boat: Boat):
         """
         Stroke Rate Effect: 45 spm:
@@ -151,6 +159,7 @@ class GameLogic:
             GameLogic.change_stroke_rate(boat, "35 spm")
 
     # ------ PLAY/DISCARD CARDS ------ 
+    @staticmethod
     def get_playable_cards(boat: Boat):
         """
         Returns playable cards and number allowed this turn.
@@ -162,6 +171,7 @@ class GameLogic:
         playable_cards = [c for c in boat.hand if c != "s"]
         return playable_cards, number_cards
 
+    @staticmethod
     def discard_cards(boat: Boat, selected_cards: list):
         """
         Remove selected cards from hand and sends them to dicard
@@ -172,6 +182,7 @@ class GameLogic:
                 boat.hand.remove(card)
     
     # ------ MOVEMENT ------ 
+    @staticmethod
     def calculate_movement(boat: Boat, played_cards: list):
         """
         Calculate movement of boat based on played cards
@@ -200,6 +211,7 @@ class GameLogic:
         GameLogic.discard_cards(boat, played_cards)
         return spaces_moved
 
+    @staticmethod
     def check_split_limit(boat: Boat, pace_this_turn: int, limits: dict):
         """
         Check if a boat passed a split limit too fast.
@@ -219,6 +231,7 @@ class GameLogic:
                         return "crab", split_loc
         return "passed", 0
     
+    @staticmethod
     def apply_crab(boat: Boat, split_location: int):
         """
         Applies crab penalities.
@@ -235,6 +248,7 @@ class GameLogic:
         boat.stroke_rate = 0
         boat.caught_crab = True
     
+    @staticmethod
     def apply_movement(boat: Boat, movement: int):
         """
         Applies movement to the boat.
@@ -242,6 +256,7 @@ class GameLogic:
         boat.position = min(boat.position + movement, VENUE_LENGTH)
 
     # ------ REPLENISH HAND ------
+    @staticmethod
     def replenish_hand(boat: Boat):
         """
         Finish the turn by refilling hand.
@@ -251,6 +266,7 @@ class GameLogic:
         GameLogic.draw_cards(boat)
     
     # ------ BONUS PHASE ------
+    @staticmethod
     def can_use_motivation(current_boat: Boat, boat_ahead: Boat):
         """
         Checks if motivation bonus is allowed.
@@ -262,12 +278,14 @@ class GameLogic:
         else:
             return False
 
+    @staticmethod
     def motivation_bonus(current_boat: Boat):
         """
         Applies motivation bonus.
         """
         current_boat.position += 2
 
+    @staticmethod
     def change_tides_bonus(boat: Boat):
         """
         Applies change of tide bonus.

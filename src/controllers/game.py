@@ -155,7 +155,7 @@ class GameController:
                             if not available_cards:
                                 break
                             
-                            card = GameView.get_card_to_discard()
+                            card = GameView.get_card_to_discard(b, available_cards)
                             if card == "Done":
                                 break
                             

@@ -3,6 +3,7 @@ from src.engine.constants import SPLITS, AGGRESSION_PROFILES
 from src.engine.boat import Boat
 
 class NPCLogic:
+    @staticmethod
     def choose_cards(boat: Boat):
         """
         Picks the best cards to play from the hand.
@@ -14,6 +15,7 @@ class NPCLogic:
         )
         return playable
     
+    @staticmethod
     def calculate_speed_for_rate(boat: Boat, rate):
         """
         Estimates total movement value of a card selection.
@@ -28,6 +30,7 @@ class NPCLogic:
         cards_to_play = playable_cards[:needed]
         return sum([(c if isinstance(c, int) else 2) for c in cards_to_play])
     
+    @staticmethod
     def detect_pace_limits(boat: Boat, est_speed, limit = SPLITS):
         """
         Checks if the estimated speed will cross a split line.
@@ -43,6 +46,7 @@ class NPCLogic:
                 break
         return next_limit_loc, next_limit_pace
 
+    @staticmethod
     def choose_stroke_rate(boat: Boat, limit = SPLITS):
         """
         Decides the target stroke rate based on stamina, hand state, and course position.
@@ -59,7 +63,6 @@ class NPCLogic:
         best_safe_rate = 0
         best_risky_rate = 0
         risky_limit_loc = None
-        risky_cost = 0
 
         for rate in [2,1,0]:
             est_speed = NPCLogic.calculate_speed_for_rate(boat, rate)
@@ -80,7 +83,6 @@ class NPCLogic:
                 if rate > best_risky_rate:
                     best_risky_rate = rate
                     risky_limit_loc = next_limit_loc
-                    risky_cost = cost
             
         # Make decision
         if best_risky_rate <= best_safe_rate:
@@ -99,6 +101,7 @@ class NPCLogic:
 
         return best_safe_rate
     
+    @staticmethod
     def choose_motivation(boat: Boat):
         """
         Choose to use Motivation bonus if near the end of the race or have plenty of energy.

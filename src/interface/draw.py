@@ -1,24 +1,18 @@
 import os
 
 def clear_screen():
-    """
-    Clear screen.
-    """
+    """Clear screen."""
     os.system('cls' if os.name == 'nt' else 'clear')
 
-def terminal_size():
-    """
-    Obtain terminal size
-    """
-    terminal_size = os.get_terminal_size()
-    terminal_width = terminal_size[0]
-    return terminal_width    
+def get_terminal_with():
+    """Obtains terminal width."""
+    return os.get_terminal_size()[0]    
 
 def draw_header(title):
     """
     Draw a centred header using the terminal size.
     """
-    width = terminal_size()
+    width = get_terminal_with()
     
     # Calculate empty space needed for title
     input_length = len(title)
@@ -45,7 +39,7 @@ def draw_options(options, selected_index, color=None):
     Finds the widest option to create a 'box' and centers that box,
     ensuring all arrows and text start at the same horizontal position.
     """
-    width = terminal_size()
+    width = get_terminal_with()
     
     # Find the longest option to determine the width of our menu block
     max_option_len = max(len(opt) for opt in options) + 4
@@ -66,10 +60,8 @@ def draw_options(options, selected_index, color=None):
             print(f"{padding}{text}")
 
 def draw_cards(options, selected_index, color=None):
-    """
-    Finds the total size of the options in the screen and center them.
-    """
-    width = terminal_size()
+    """Finds the total size of the options in the screen and center them."""
+    width = get_terminal_with()
 
     # Build list of cards as they appear
     colored_cards = []
@@ -102,11 +94,9 @@ def draw_cards(options, selected_index, color=None):
     print(f"\n{padding}{full_row}\n")
 
 def draw_venue(boats, venue_length=100):
-    """
-    Draws the lanes for the race and the boats in the correct position
-    """
+    """Draws the lanes for the race and the boats in the correct position."""
     clear_screen()
-    width = terminal_size()
+    width = get_terminal_with()
 
     if width < 40:
         print("Please widen your terminal to view the race!")
@@ -141,10 +131,8 @@ def draw_venue(boats, venue_length=100):
 
 
 def draw_leaderboard(positions, title):
-    """
-    Draws leaderboard with positions during race and turns when the race finished if title contains "Finish" or "Final"
-    """
-    width = terminal_size()
+    """Draws leaderboard with positions during race and turns when the race finished if title contains "Finish" or "Final"."""
+    width = get_terminal_with()
 
     # Calculate empty space needed for title
     input_length = len(title)
@@ -174,9 +162,7 @@ def draw_leaderboard(positions, title):
         print(f"{padding}{b.color}{i+1}. {b.name:<8} {text}\033[0m")
 
 def stroke_rate_name(stroke_rate):
-    """
-    Change appearence of stroke rate from numbers to the corresponding spm rate.
-    """
+    """Change appearence of stroke rate from numbers to the corresponding spm rate."""
     if type(stroke_rate) == int:
         if stroke_rate == 0:
             return "35 spm"
